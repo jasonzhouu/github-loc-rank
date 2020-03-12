@@ -1,0 +1,28 @@
+{
+  "name": "github-loc-rank",
+  "version": "1.0.0",
+  "description": "rank personal starred github repositories",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/jasonzhouu/github-loc-rank.git"
+  },
+  "keywords": [
+    "github",
+    "loc"
+  ],
+  "author": "周宇盛Yusheng Zhou",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jasonzhouu/github-loc-rank/issues"
+  },
+  "homepage": "https://github.com/jasonzhouu/github-loc-rank#readme",
+  "devDependencies": {
+    "eslint": "^6.8.0",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-plugin-import": "^2.20.1"
+  }
+}
