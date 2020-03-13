@@ -16,11 +16,11 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "test/getStarredRepositories.test.js",
+      "name": "test/StarredRepositories.test.js",
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}/test/getStarredRepositories.test.js"
+      "program": "${workspaceFolder}/test/StarredRepositories.test.js"
     },
     {
       "type": "node",
