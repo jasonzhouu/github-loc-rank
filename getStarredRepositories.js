@@ -29,7 +29,7 @@ module.exports = async function getStarredRepositories({ token, sort }) {
   repositories = repositories.concat(leftRepositories);
 
   // 提取其中的语言、代码函数
-  const extractedData = extractData(repositories);
+  const extractedData = await extractData(repositories, token);
 
   return extractedData;
 };
