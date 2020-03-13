@@ -1,17 +1,25 @@
-/* eslint-disable consistent-return */
-let currentPage = 2;
-let repositories = [];
+function getOnePageRepositories({ index, octokit }) {
+  const url = `/user/starred?sort=created&page=${index}`;
+  return octokit.request(url);
+}
 
-module.exports = async function getLeftPagesRepositories({ userId, pageLength, octokit }) {
-  const url = `/user/starred?sort=created&page=${currentPage}`;
-  const { data } = await octokit.request(url);
-  repositories = repositories.concat(data);
-  currentPage += 1;
-
-  pageLength = 2; // todo：删除
-  if (currentPage <= pageLength) {
-    // @todo: 改成 Promise.all
-    await getLeftPagesRepositories({ userId, pageLength });
+async function getLeftPagesRepositories({ pageLength, octokit }) {
+  let repositories = [];
+  const promises = [];
+  // @done: 测试promise.all是否可行
+  // @todo: 控制并发量，分批次 promise.all，逐个 .then 进行
+  // @todo: 将pageLength改回来
+  pageLength = 5;
+  for (let index = 2; index <= pageLength; index++) {
+    promises.push(getOnePageRepositories({ index, octokit }));
   }
+  (await Promise.all(promises)).forEach((item) => {
+    repositories = repositories.concat(item.data);
+  });
   return repositories;
+}
+
+module.exports = {
+  getOnePageRepositories,
+  getLeftPagesRepositories,
 };

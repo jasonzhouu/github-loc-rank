@@ -15,7 +15,7 @@ module.exports = async function extractData(repositories, token) {
   });
   const locList = await Promise.all(locPromises);
   locList.forEach((loc, index) => {
-    extractedData[index].loc = loc.totalLoc;
+    extractedData[index].loc = loc;
   });
 
   // totalLoc,
