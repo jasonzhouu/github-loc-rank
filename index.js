@@ -1,9 +1,16 @@
-const getStarredRepositories = require('./getStarredRepositories.js');
+const StarredRepositories = require('./StarredRepositories.js');
 
-const token = process.argv[2];
+let token;
+if (process.argv.includes('--token')) {
+  const index = process.argv.indexOf('--token');
+  token = process.argv[index + 1];
+}
 
 (async function IIFE() {
-  const extractedData = await getStarredRepositories(token);
+  const starredRepositories = new StarredRepositories({ token });
+  await starredRepositories.init();
+  // await starredRepositories.getNextPageData();
+  const extractedData = starredRepositories.get();
   console.log(extractedData);
 }());
 

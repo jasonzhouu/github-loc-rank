@@ -18,6 +18,5 @@ module.exports = async function extractData(repositories, token) {
     extractedData[index].loc = loc;
   });
 
-  // totalLoc,
   return extractedData;
 };
