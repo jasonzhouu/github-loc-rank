@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/jasonzhouu/github-loc-rank#readme",
   "dependencies": {
+    "@octokit/rest": "^17.1.0",
     "axios": "^0.19.2"
   },
   "devDependencies": {

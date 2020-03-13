@@ -3,11 +3,9 @@ module.exports = function parseHeaderLink(link) {
 
   const linkArr = link.split('/');
 
-  const userId = linkArr[4];
-  const pageLength = linkArr[10].split('=')[2].slice(0, -6);
+  const pageLength = linkArr[8].split('=')[2].slice(0, -6);
 
   return {
-    userId,
     pageLength,
   };
 };

@@ -14,9 +14,9 @@ async function getLanguageDetails(repositories) {
   return languageDetailLists;
 }
 
-async function extractData(repositories) {
+function extractData(repositories) {
   const extractedData = [];
-  repositories.forEach(async (repository) => {
+  repositories.forEach((repository) => {
     const htmlUrl = repository.html_url;
     const mainLanguage = repository.language;
     extractedData.push({
