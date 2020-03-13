@@ -2,7 +2,7 @@
 const axios = require('axios');
 const parseHeaderLink = require('./parseHeaderLink.js');
 const getLeftPagesRepositories = require('./getPage.js');
-const extractData = require('./extractData.js');
+const { extractData } = require('./extractData.js');
 
 module.exports = async function getStarredRepositories({ token, username, sort }) {
   let url = 'https://api.github.com';

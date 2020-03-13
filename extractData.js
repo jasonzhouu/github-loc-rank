@@ -1,33 +1,34 @@
 const axios = require('axios');
 
-async function getLanguages(languagesUrl) {
-  const { data } = await axios.get(languagesUrl);
-  return data;
-}
-
-module.exports = async function extractData(repositories) {
-  const extractedData = [];
+async function getLanguageDetails(repositories) {
   const languagePromises = [];
-  let languageLists;
-  repositories.forEach(async (repository) => {
-    const htmlUrl = repository.html_url;
-    const languagesUrl = repository.languages_url;
-    const mainLanguage = repository.language;
-    languagePromises.push(getLanguages(languagesUrl));
-
-    extractedData.push({
-      htmlUrl,
-      mainLanguage,
-      languageList: {},
-    });
+  let languageDetailLists;
+  repositories.forEach((repository) => {
+    languagePromises.push(axios.get(repository.language_url));
   });
   try {
-    languageLists = await Promise.all(languagePromises);
+    languageDetailLists = await Promise.all(languagePromises);
   } catch (error) {
     console.error(error);
   }
-  extractedData.forEach((item, index) => {
-    item.languageList = languageLists[index];
+  return languageDetailLists;
+}
+
+async function extractData(repositories) {
+  const extractedData = [];
+  repositories.forEach(async (repository) => {
+    const htmlUrl = repository.html_url;
+    const mainLanguage = repository.language;
+    extractedData.push({
+      htmlUrl,
+      mainLanguage,
+    });
   });
+
   return extractedData;
+}
+
+module.exports = {
+  extractData,
+  getLanguageDetails,
 };
