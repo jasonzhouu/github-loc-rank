@@ -18,7 +18,7 @@ module.exports = async function getStarredRepositories({ token, username, sort }
     url += `?sort=${sort}`;
   }
   let stat;
-  try { stat = await await octokit.request(url); } catch (error) {
+  try { stat = await octokit.request(url); } catch (error) {
     console.error(error);
   }
 
@@ -36,5 +36,5 @@ module.exports = async function getStarredRepositories({ token, username, sort }
   // 提取其中的语言、代码函数
   const extractedData = extractData(repositories);
 
-  console.log(extractedData);
+  return extractedData;
 };
