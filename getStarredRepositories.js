@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const axios = require('axios');
 const parseHeaderLink = require('./parseHeaderLink.js');
 const getLeftPagesRepositories = require('./getPage.js');
@@ -19,7 +20,10 @@ module.exports = async function getStarredRepositories({ token, username, sort }
   if (sort !== undefined) {
     url += `?sort=${sort}`;
   }
-  const stat = await axios.get(url, options);
+  let stat;
+  try { await axios.get(url, options); } catch (error) {
+    console.error(error);
+  }
 
   let repositories = [];
   const { data } = stat;
