@@ -11,7 +11,6 @@ module.exports = async function getLeftPagesRepositories({ userId, pageLength })
   currentPage += 1;
   if (currentPage <= pageLength) {
     await getLeftPagesRepositories({ userId, pageLength });
-  } else if (currentPage > pageLength) {
-    return repositories;
   }
+  return repositories;
 };
