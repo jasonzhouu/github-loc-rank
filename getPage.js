@@ -1,5 +1,5 @@
 function getOnePageRepositories({ index, octokit }) {
-  const url = `/user/starred?sort=created&page=${index}`;
+  const url = `/user/starred?page=${index}`;
   return octokit.request(url);
 }
 

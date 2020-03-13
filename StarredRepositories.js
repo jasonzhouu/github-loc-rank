@@ -4,14 +4,11 @@ const parseHeaderLink = require('./parseHeaderLink.js');
 const { getOnePageRepositories, getLeftPagesRepositories } = require('./getPage.js');
 const extractData = require('./extractData.js');
 
-module.exports = function StarredRepositories({ token, sort }) {
+module.exports = function StarredRepositories({ token }) {
   const octokit = new Octokit({
     auth: token,
   });
-  let url = 'https://api.github.com/user/starred';
-  if (sort !== undefined) {
-    url += `?sort=${sort}`;
-  }
+  const url = 'https://api.github.com/user/starred';
 
   let pageLength;
   let currentPage = 1;
