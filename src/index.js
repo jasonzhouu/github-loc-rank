@@ -13,13 +13,18 @@ let token;
 let starredRepositories;
 
 document.querySelector('#token').addEventListener('click', async (event) => {
-  const status = document.createElement('span');
-  event.target.insertAdjacentElement('afterend', status);
-  status.textContent = '...';
+  const status = document.getElementById('status');
+  status.innerHTML = '';
+
+  const loadding = document.querySelector('.lds-ellipsis').cloneNode(true);
+  loadding.style.display = 'inline-block';
+  status.append(loadding);
 
   token = document.querySelector('input').value;
   starredRepositories = new StarredRepositories({ token });
   const pageLength = await starredRepositories.init();
+
+  status.removeChild(loadding);
   status.textContent = `√ there are ${pageLength} pages`;
 });
 
@@ -49,18 +54,18 @@ function render() {
 }
 
 document.querySelector('#load').addEventListener('click', async (event) => {
-  const loadding = document.querySelector('#loadding');
+  const loadding = document.querySelector('.lds-ellipsis');
 
-  // done: 加载时提示正在加载
+  // 加载时提示正在加载
   event.target.style.display = 'none';
-  loadding.textContent = 'loadding';
+  loadding.style.display = 'block';
 
   const lastPage = await starredRepositories.getOnePage();
 
   render();
 
   event.target.style.display = 'inline';
-  loadding.textContent = '';
+  loadding.style.display = 'none';
 
   if (lastPage === true) {
     event.target.style.display = 'none';
