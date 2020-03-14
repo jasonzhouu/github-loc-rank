@@ -4,15 +4,25 @@ const parseHeaderLink = require('./parseHeaderLink.js');
 const { getOnePageRepositories, getLeftPagesRepositories } = require('./getPage.js');
 const extractData = require('./extractData.js');
 
-module.exports = function StarredRepositories({ token }) {
-  const octokit = new Octokit({
-    auth: token,
-  });
+// todo: 改用 graphql API，以更加节省流量、快速的方式获取数据
+module.exports = function StarredRepositories() {
   const url = 'https://api.github.com/user/starred';
-
-  let pageLength;
+  let extractedData = [];
   let currentPage = 1;
-  let extractedData = []; // 从中提取出的需要的数据
+  let pageLength = 1;
+  let token = '';
+
+  let octokit;
+
+  this.restore = (restoreData) => {
+    if (restoreData) {
+      pageLength = restoreData.pageLength;
+      currentPage = restoreData.currentPage;
+      extractedData = restoreData.extractedData;
+      token = restoreData.token;
+      octokit = new Octokit({ auth: token });
+    }
+  };
 
   async function extractDataAndJoin(data) {
     const someExtractedData = await extractData(data, token);
@@ -23,7 +33,9 @@ module.exports = function StarredRepositories({ token }) {
    * 初始化，获取：第一页数据、总页数
    * 提取数据，并添加到 extractedData
    */
-  this.init = async () => {
+  this.init = async (aToken) => {
+    token = aToken;
+    octokit = new Octokit({ auth: aToken });
     try {
       const { data, headers } = await octokit.request(url);
       pageLength = parseHeaderLink(headers.link);
@@ -48,7 +60,7 @@ module.exports = function StarredRepositories({ token }) {
     } catch (error) {
       console.error(error);
     }
-    return (currentPage > pageLength);
+    return currentPage;
   };
 
   this.getAllLeftPages = async () => {
@@ -61,6 +73,7 @@ module.exports = function StarredRepositories({ token }) {
   this.get = () => extractedData;
 
   this.sort = (attribute, direction) => {
+    if (!['stars', 'loc'].includes(attribute)) { return; }
     switch (direction) {
       case 'ascending':
         extractedData.sort((a, b) => (a[attribute] - b[attribute]));

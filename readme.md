@@ -5,7 +5,9 @@
 get the lines of code (LOC) of github repositories that are starred by you.
 
 ## reason why create it
-because I want to join the contribution of some github repository, but I don't want to join a repository that is too big. I want to join the repository that is less than 20,000 lines of code.
+because I want to join the contribution of open source repository on github, but I don't want to join a repository that's too large. I want to join the repository that is less than 20,000 lines of code, so I need to know the LOC of them.
+
+But github don't show me the LOC. There some browser extensions can show the LOC of github repository. But they still can't fill my needs. I need to get all repositories that are written in Javascript and LOC < 20,000. So I write it by myself.
 
 ## try it online
 https://jasonzhouu.github.io/github-loc-rank/
@@ -24,10 +26,8 @@ const fs = require('fs');
 const StarredRepositories = require('github-loc-rank');
 
 (async function IIFE() {
-  const starredRepositories = new StarredRepositories({
-    token: 'your-github-token',
-  });
-  await starredRepositories.init();
+  const starredRepositories = new StarredRepositories);
+  await starredRepositories.init('your-github-token');
   // get one page
   await starredRepositories.getOnePage();
   // get the extracted data

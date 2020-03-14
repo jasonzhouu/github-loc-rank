@@ -4,15 +4,15 @@ module.exports = async function extractData(repositories, token) {
   const extractedData = [];
   const locPromises = [];
   repositories.forEach((repository) => {
-    const htmlUrl = repository.html_url;
-    const mainLanguage = repository.language;
-    const stars = repository.stargazers_count;
-    const repoName = htmlUrl.split('/').slice(3, 5).join('/');
+    const repoName = repository.full_name;
+
     locPromises.push(githubLoc({ repoName, token }));
     extractedData.push({
-      htmlUrl,
-      mainLanguage,
-      stars,
+      repoName: repository.full_name,
+      htmlUrl: repository.html_url,
+      stars: repository.stargazers_count,
+      mainLanguage: repository.language,
+      description: repository.description,
     });
   });
   const locList = await Promise.all(locPromises);
