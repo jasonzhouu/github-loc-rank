@@ -34,7 +34,8 @@ body {
   justify-content: center;
   box-sizing: border-box;
   height: 3.5rem;
-  padding: 1rem 0;
+  padding-top: 1.3rem;
+  padding-bottom: 1rem;
   font-size: 1.5rem;
   color: #00adb5;
 }
@@ -80,7 +81,25 @@ button {
   border: none;
 }
 
+#load {
+  display: none;
+}
+
 .lds-ellipsis {
   margin: 0 auto;
   display: none;
+}
+
+td a {
+  text-decoration: none;
+  color: #00adb5;
+}
+
+td a:hover {
+  text-decoration: underline;
+}
+
+td a:visited {
+  text-decoration: none;
+  color: #00adb5;
 }

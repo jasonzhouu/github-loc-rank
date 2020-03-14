@@ -12,7 +12,7 @@ const StarredRepositories = require('github-loc-rank');
 let token;
 let starredRepositories;
 
-document.querySelector('#token').addEventListener('click', async (event) => {
+document.querySelector('#token').addEventListener('click', async () => {
   const status = document.getElementById('status');
   status.innerHTML = '';
 
@@ -26,6 +26,8 @@ document.querySelector('#token').addEventListener('click', async (event) => {
 
   status.removeChild(loadding);
   status.textContent = `√ there are ${pageLength} pages`;
+
+  document.getElementById('load').style.display = 'inline-block';
 });
 
 // todo: 边加载边渲染
@@ -38,7 +40,7 @@ function render() {
     const loc = document.createElement('td');
     const stars = document.createElement('td');
 
-    reponame.textContent = repository.htmlUrl;
+    reponame.append(renderRepo(repository.htmlUrl));
     loc.textContent = repository.loc;
     stars.textContent = repository.stars;
 
@@ -51,6 +53,14 @@ function render() {
     row.append(reponame, mainLanguage, stars, loc);
     document.querySelector('tbody').append(row);
   });
+}
+
+function renderRepo(url) {
+  const reponame = url.split('/').slice(3, 5).join('/');
+  const dom = document.createElement('a');
+  dom.textContent = reponame;
+  dom.setAttribute('href', url);
+  return dom;
 }
 
 document.querySelector('#load').addEventListener('click', async (event) => {
