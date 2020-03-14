@@ -30,6 +30,7 @@ module.exports = function StarredRepositories({ token }) {
     } catch (error) {
       console.error(error);
     }
+    return pageLength;
   };
 
   /**
@@ -58,4 +59,17 @@ module.exports = function StarredRepositories({ token }) {
   };
 
   this.get = () => extractedData;
+
+  this.sort = (attribute, direction) => {
+    switch (direction) {
+      case 'ascending':
+        extractedData.sort((a, b) => (a[attribute] - b[attribute]));
+        break;
+      case 'descending':
+        extractedData.sort((a, b) => (b[attribute] - a[attribute]));
+        break;
+      default:
+        break;
+    }
+  };
 };
