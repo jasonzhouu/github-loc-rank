@@ -1,0 +1,2 @@
+- `npm run watch`: webpack compile file automatically when file changes\
+- `npm run start`: start webpack-dev-server open the page in browser, and refresh automatically when file changes.

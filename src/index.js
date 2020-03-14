@@ -5,7 +5,7 @@
  * 4。设置排序按钮
  * 5。设置筛选功能
  * 6。webpack 打包代码，因为应用的包用的是commonjs模块系统，需要进行转换
- * 7。webpack 自动打包
+ * 7。webpack 自动打包，自动刷新页面
  */
 const StarredRepositories = require('github-loc-rank');
 
