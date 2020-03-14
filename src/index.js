@@ -16,31 +16,48 @@
  */
 const StarredRepositories = require('github-loc-rank');
 
-let token;
-let starredRepositories;
-let pageLength;
-let currentPage;
+let token = localStorage.getItem('token');
+let pageLength = parseInt(localStorage.getItem('pageLength'), 10);
+let currentPage = parseInt(localStorage.getItem('currentPage'), 10);
 
-document.querySelector('input').value = localStorage.getItem('token');
+let starredRepositories;
+
+document.querySelector('input').value = token;
+
+if (token && pageLength && currentPage) {
+  starredRepositories = new StarredRepositories();
+  starredRepositories.restore({
+    extractedData: JSON.parse(localStorage.getItem('extractedData')),
+    pageLength,
+    currentPage,
+    token,
+  });
+  render();
+  const status = document.getElementById('status');
+  status.textContent = `√ there are ${pageLength} pages`; // 提示页数
+  document.querySelector('input').value = ''; // 清除输入框
+  document.getElementById('load').style.display = 'inline-block'; // 显示下一页按钮
+}
 
 document.querySelector('#token').addEventListener('click', async () => {
   localStorage.setItem('token', document.querySelector('input').value);
 
   const status = document.getElementById('status');
   status.innerHTML = '';
-
+  // 显示loadding icon
   const loadding = document.querySelector('.lds-ellipsis').cloneNode(true);
   loadding.style.display = 'inline-block';
   status.append(loadding);
 
   token = document.querySelector('input').value;
-  starredRepositories = new StarredRepositories({ token });
-  pageLength = await starredRepositories.init();
+  starredRepositories = new StarredRepositories();
+  pageLength = await starredRepositories.init(token);
+  localStorage.setItem('pageLength', pageLength);
 
-  status.removeChild(loadding);
-  status.textContent = `√ there are ${pageLength} pages`;
-  document.querySelector('input').value = '';
-  document.getElementById('load').style.display = 'inline-block';
+  status.removeChild(loadding); // 去除loadding icon
+  status.textContent = `√ there are ${pageLength} pages`; // 提示页数
+  document.querySelector('input').value = ''; // 清除输入框
+  document.getElementById('load').style.display = 'inline-block'; // 显示下一页按钮
 
   document.querySelector('#load').click();
 });
@@ -84,14 +101,18 @@ document.querySelector('#load').addEventListener('click', async (event) => {
   event.target.style.display = 'none';
   loadding.style.display = 'block';
 
-  const lastPage = await starredRepositories.getOnePage();
+  currentPage = await starredRepositories.getOnePage();
+  localStorage.setItem('currentPage', currentPage);
+  localStorage.setItem('extractedData', JSON.stringify(starredRepositories.get()));
 
   render();
 
   event.target.style.display = 'inline';
   loadding.style.display = 'none';
 
-  if (lastPage === true) {
+  // 如果已经加载到最后一页，将加载按钮去除
+  if (currentPage > pageLength) {
+    event.target.disabled = 'disabled';
     event.target.style.display = 'none';
   }
 });
