@@ -1,7 +1,7 @@
 /**
- * 1。获取数据
- * 2。展示数据
- * 3。用户输入token
+ * √ 1。获取数据
+ * √ 2。展示数据
+ * √ 3。用户输入token
  * 4。设置排序按钮
  * 5。设置筛选功能
  * √ 6。webpack 打包代码，因为应用的包用的是commonjs模块系统，需要进行转换
@@ -9,8 +9,22 @@
  */
 const StarredRepositories = require('github-loc-rank');
 
-const token = 'baba1459cfd2b8b86d806c5e0211fa3166e06264';
-const starredRepositories = new StarredRepositories({ token });
+// let token = 'baba1459cfd2b8b86d806c5e0211fa3166e06264';
+// const starredRepositories = new StarredRepositories({ token });
+let token;
+let starredRepositories;
+
+document.querySelector('#token').addEventListener('click', async (event) => {
+  const status = document.createElement('span');
+  event.target.insertAdjacentElement('afterend', status);
+  status.textContent = '...';
+
+  token = document.querySelector('input').value;
+  starredRepositories = new StarredRepositories({ token });
+  await starredRepositories.init();
+  render();
+  status.textContent = '√';
+});
 
 // todo: 边加载边渲染
 function render() {
@@ -34,12 +48,7 @@ function render() {
   });
 }
 
-(async () => {
-  await starredRepositories.init();
-  render();
-})();
-
-document.querySelector('body button').addEventListener('click', async (event) => {
+document.querySelector('#nextPage').addEventListener('click', async (event) => {
   // done: 加载时提示正在加载
   event.target.style.display = 'none';
   const loadding = document.querySelector('#loadding');
