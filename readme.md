@@ -4,7 +4,12 @@
 
 used to get the LOC of github repositories that are starred.
 
-## usage
+## try it online
+https://jasonzhouu.github.io/github-loc-rank/
+
+<img src="https://i.ibb.co/zxwYXn6/screenshot-localhost-8080-2020-03-14-16-17-14.png" alt="screenshot-localhost-8080-2020-03-14-16-17-14" border="0">
+
+## import package 
 install:
 ```bash
 npm i github-loc-rank -S
