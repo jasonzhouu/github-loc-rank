@@ -5,10 +5,36 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>github LOC rank</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
-  hello
+  <div id="tokenSection">
+    <input type="text" placeholder="github token">
+    <button id="token">enter</button>
+  </div>
+  <div id="status"></div>
+  <table>
+    <thead>
+      <tr>
+        <th>reponame</th>
+        <th>main language</th>
+        <th>stars</th>
+        <th id="loc" aria-sort="none">
+          loc <span></span>
+        </th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+  <button id="load">load a page</button>
+  <div class="lds-ellipsis">
+    <div></div>
+    <div></div>
+    <div></div>
+    <div></div>
+  </div>
+  <script src="./app.js" type="module"></script>
 </body>
 
 </html>
