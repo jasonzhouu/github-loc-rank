@@ -27,9 +27,6 @@ module.exports = function StarredRepositories({ token }) {
     try {
       const { data, headers } = await octokit.request(url);
       pageLength = parseHeaderLink(headers.link);
-      // 第一页数据
-      await extractDataAndJoin(data);
-      currentPage += 1;
     } catch (error) {
       console.error(error);
     }
@@ -37,8 +34,9 @@ module.exports = function StarredRepositories({ token }) {
 
   /**
    * 获取下一页的数据
+   * 告诉调用者，当前是否是最后一页
    */
-  this.getNextPageData = async () => {
+  this.getOnePage = async () => {
     try {
       const { data } = await getOnePageRepositories({
         index: currentPage,
@@ -49,6 +47,7 @@ module.exports = function StarredRepositories({ token }) {
     } catch (error) {
       console.error(error);
     }
+    return (currentPage === pageLength);
   };
 
   this.getAllLeftPages = async () => {

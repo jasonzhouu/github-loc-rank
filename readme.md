@@ -19,10 +19,9 @@ const StarredRepositories = require('github-loc-rank');
   const starredRepositories = new StarredRepositories({
     token: 'your-github-token',
   });
-  // get the 1st page
   await starredRepositories.init();
-  // get next page
-  await starredRepositories.getNextPageData();
+  // get one page
+  await starredRepositories.getOnePage();
   // get the extracted data
   const extractedData = starredRepositories.get();
   fs.writeFileSync('./repositories.json', JSON.stringify(extractedData, null, '\t'));
