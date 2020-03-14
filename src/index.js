@@ -8,17 +8,24 @@
  * √ 7。webpack 自动打包，自动刷新页面
  * √ 8。webpack区分development, production环境
  * 9。处理token无效的处理办法
- * 10。加载出页面数之后，立即加载表格
+ * √ 10。加载出页面数之后，立即加载表格
  * 11。readme介绍如何获取token
  * 12。右上角提供github仓库链接
  * 13。将数据保存到local storage
+ * 14。获取repo list立即渲染，后续边加载loc边渲染
  */
 const StarredRepositories = require('github-loc-rank');
 
 let token;
 let starredRepositories;
+let pageLength;
+let currentPage;
+
+document.querySelector('input').value = localStorage.getItem('token');
 
 document.querySelector('#token').addEventListener('click', async () => {
+  localStorage.setItem('token', document.querySelector('input').value);
+
   const status = document.getElementById('status');
   status.innerHTML = '';
 
@@ -28,15 +35,16 @@ document.querySelector('#token').addEventListener('click', async () => {
 
   token = document.querySelector('input').value;
   starredRepositories = new StarredRepositories({ token });
-  const pageLength = await starredRepositories.init();
+  pageLength = await starredRepositories.init();
 
   status.removeChild(loadding);
   status.textContent = `√ there are ${pageLength} pages`;
   document.querySelector('input').value = '';
   document.getElementById('load').style.display = 'inline-block';
+
+  document.querySelector('#load').click();
 });
 
-// todo: 边加载边渲染
 function render() {
   document.querySelector('tbody').innerHTML = '';
   starredRepositories.get().forEach((repository) => {
