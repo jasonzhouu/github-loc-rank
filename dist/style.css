@@ -8,7 +8,7 @@ body {
   margin: 1em auto;
   min-height: calc(100vh - 2em);
   box-sizing: border-box;
-  color: #222831;
+  color: #393e46;
   padding: 1em;
   font-family: sans-serif;
 }
@@ -25,7 +25,6 @@ body {
   border-bottom: 1px solid #00adb5;
   height: 3rem;
   font-size: 1.5rem;
-  color: #222831;
 }
 
 #status {

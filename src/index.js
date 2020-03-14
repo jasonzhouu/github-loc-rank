@@ -26,7 +26,7 @@ document.querySelector('#token').addEventListener('click', async () => {
 
   status.removeChild(loadding);
   status.textContent = `√ there are ${pageLength} pages`;
-
+  document.querySelector('input').value = '';
   document.getElementById('load').style.display = 'inline-block';
 });
 
