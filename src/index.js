@@ -2,10 +2,16 @@
  * √ 1。获取数据
  * √ 2。展示数据
  * √ 3。用户输入token
- * √ 4。设置排序功能
- * 5。设置筛选功能
+ * √ 4。按loc、stars数量
+ * 5。按language筛选
  * √ 6。webpack 打包代码，因为应用的包用的是commonjs模块系统，需要进行转换
  * √ 7。webpack 自动打包，自动刷新页面
+ * √ 8。webpack区分development, production环境
+ * 9。处理token无效的处理办法
+ * 10。加载出页面数之后，立即加载表格
+ * 11。readme介绍如何获取token
+ * 12。右上角提供github仓库链接
+ * 13。将数据保存到local storage
  */
 const StarredRepositories = require('github-loc-rank');
 
@@ -82,18 +88,34 @@ document.querySelector('#load').addEventListener('click', async (event) => {
   }
 });
 
-document.getElementById('loc').addEventListener('click', (event) => {
-  if (!starredRepositories) { return; }
-  if (event.target.getAttribute('aria-sort') === 'none' || event.target.getAttribute('aria-sort') === 'ascending') {
-    starredRepositories.sort('loc', 'descending');
-    event.target.setAttribute('aria-sort', 'descending');
-    event.target.querySelector('span').classList.add('descending');
-    event.target.querySelector('span').classList.remove('ascending');
-  } else if (event.target.getAttribute('aria-sort') === 'descending') {
-    starredRepositories.sort('loc', 'ascending');
-    event.target.setAttribute('aria-sort', 'ascending');
-    event.target.querySelector('span').classList.add('ascending');
-    event.target.querySelector('span').classList.remove('descending');
-  }
-  render();
+// todo: 新获取的数据也按照之前的设置进行排序
+['loc', 'stars'].forEach((item) => {
+  document.getElementById(item).addEventListener('click', (event) => {
+    if (!starredRepositories) { return; } // 防止 starredRepositories 为undefined，造成下面调用它的方法出错
+    if (event.target.getAttribute('aria-sort') === 'none' || event.target.getAttribute('aria-sort') === 'ascending') {
+      clearSort();
+      starredRepositories.sort(item, 'descending');
+      event.target.setAttribute('aria-sort', 'descending');
+      event.target.querySelector('span').classList.add('descending');
+    } else if (event.target.getAttribute('aria-sort') === 'descending') {
+      clearSort();
+      starredRepositories.sort(item, 'ascending');
+      event.target.setAttribute('aria-sort', 'ascending');
+      event.target.querySelector('span').classList.add('ascending');
+    }
+    render();
+  });
 });
+
+function clearSort() {
+  document.querySelectorAll('thead tr th').forEach((th) => {
+    if (th.hasAttributes('aria-sort')) {
+      th.setAttribute('aria-sort', 'none');
+    }
+    const span = th.querySelector('span');
+    if (span) {
+      span.classList.remove('ascending');
+      span.classList.remove('descending');
+    }
+  });
+}

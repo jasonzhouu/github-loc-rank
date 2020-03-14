@@ -1,6 +1,7 @@
 @import 'loadding.css';
 
 body {
+  min-width: 375px;
   max-width: 800px;
   display: flex;
   flex-direction: column;
@@ -49,21 +50,21 @@ table > thead > tr > th {
   font-family: sans-serif;
   font-size: 1.3em;
 }
-table > thead > tr > th:nth-child(4) {
+table > thead > tr > th:nth-child(n+3) {
   cursor: pointer;
 }
-table > thead > tr > th:nth-child(4) span {
+table > thead > tr > th:nth-child(n+3) span {
   display: inline-block;
   width: 0;
   height: 0;
   border: 6px solid transparent;
 }
 
-table > thead > tr > th:nth-child(4) span.ascending {
+table > thead > tr > th:nth-child(n+3) span.ascending {
   border-bottom-color: #00ADB5;
 }
 
-table > thead > tr > th:nth-child(4) span.descending {
+table > thead > tr > th:nth-child(n+3) span.descending {
   border-top-color: #00ADB5;
 }
 
