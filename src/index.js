@@ -7,11 +7,11 @@
  * √ 6。webpack 打包代码，因为应用的包用的是commonjs模块系统，需要进行转换
  * √ 7。webpack 自动打包，自动刷新页面
  * √ 8。webpack区分development, production环境
- * 9。处理token无效的处理办法
+ * √ 9。token无效提示
  * √ 10。加载出页面数之后，立即加载表格
  * 11。readme介绍如何获取token
  * 12。右上角提供github仓库链接
- * 13。将数据保存到local storage
+ * √ 13。将数据保存到local storage
  * 14。获取repo list立即渲染，后续边加载loc边渲染
  */
 const StarredRepositories = require('github-loc-rank');
@@ -51,7 +51,14 @@ document.querySelector('#token').addEventListener('click', async () => {
 
   token = document.querySelector('input').value;
   starredRepositories = new StarredRepositories();
-  pageLength = await starredRepositories.init(token);
+
+  clearData();
+  // 可能是更换icon，初始化内存和localStorage中的数据
+  try {
+    pageLength = await starredRepositories.init(token);
+  } catch (error) {
+    alertInvalidToken();
+  }
   localStorage.setItem('pageLength', pageLength);
 
   status.removeChild(loadding); // 去除loadding icon
@@ -62,6 +69,14 @@ document.querySelector('#token').addEventListener('click', async () => {
   document.querySelector('#load').click();
 });
 
+function clearData() {
+  pageLength = 1;
+  currentPage = 1;
+  localStorage.setItem('pageLength', pageLength);
+  localStorage.setItem('currentPage', currentPage);
+  localStorage.setItem('extractedData', []);
+}
+
 function render() {
   document.querySelector('tbody').innerHTML = '';
   starredRepositories.get().forEach((repository) => {
@@ -71,7 +86,7 @@ function render() {
     const loc = document.createElement('td');
     const stars = document.createElement('td');
 
-    reponame.append(renderRepo(repository.htmlUrl));
+    reponame.append(renderRepo(repository.htmlUrl, repository.repoName));
     loc.textContent = repository.loc;
     stars.textContent = repository.stars;
 
@@ -86,11 +101,10 @@ function render() {
   });
 }
 
-function renderRepo(url) {
-  const reponame = url.split('/').slice(3, 5).join('/');
+function renderRepo(htmlUrl, repoName) {
   const dom = document.createElement('a');
-  dom.textContent = reponame;
-  dom.setAttribute('href', url);
+  dom.textContent = repoName;
+  dom.setAttribute('href', htmlUrl);
   return dom;
 }
 
@@ -101,7 +115,11 @@ document.querySelector('#load').addEventListener('click', async (event) => {
   event.target.style.display = 'none';
   loadding.style.display = 'block';
 
-  currentPage = await starredRepositories.getOnePage();
+  try {
+    currentPage = await starredRepositories.getOnePage();
+  } catch (error) {
+    alertInvalidToken();
+  }
   localStorage.setItem('currentPage', currentPage);
   localStorage.setItem('extractedData', JSON.stringify(starredRepositories.get()));
 
@@ -116,6 +134,10 @@ document.querySelector('#load').addEventListener('click', async (event) => {
     event.target.style.display = 'none';
   }
 });
+
+function alertInvalidToken() {
+  document.getElementById('status').textContent = 'Error: maybe your token is invalid';
+}
 
 // todo: 新获取的数据也按照之前的设置进行排序
 ['loc', 'stars'].forEach((item) => {
