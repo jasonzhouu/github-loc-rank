@@ -1,8 +1,11 @@
 [![npm version][npm-image]][npm-url]
 [![install size][install-size-image]][install-size-url]
 
+## used to
+get the lines of code (LOC) of github repositories that are starred by you.
 
-used to get the LOC of github repositories that are starred.
+## reason why create it
+because I want to join the contribution of some github repository, but I don't want to join a repository that is too big. I want to join the repository that is less than 20,000 lines of code.
 
 ## try it online
 https://jasonzhouu.github.io/github-loc-rank/
