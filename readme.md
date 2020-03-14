@@ -1,3 +1,7 @@
+[![npm version][npm-image]][npm-url]
+[![install size][install-size-image]][install-size-url]
+
+
 used to get the LOC of github repositories that are starred.
 
 ## usage
@@ -25,3 +29,9 @@ const StarredRepositories = require('github-loc-rank');
 }());
 
 ```
+
+
+[npm-image]: https://flat.badgen.net/npm/v/github-loc-rank
+[npm-url]: https://www.npmjs.com/package/github-loc-rank
+[install-size-image]: https://flat.badgen.net/packagephobia/install/github-loc-rank
+[install-size-url]: https://packagephobia.now.sh/result?p=github-loc-rank
