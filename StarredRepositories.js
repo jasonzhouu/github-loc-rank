@@ -47,7 +47,7 @@ module.exports = function StarredRepositories({ token }) {
     } catch (error) {
       console.error(error);
     }
-    return (currentPage === pageLength);
+    return (currentPage > pageLength);
   };
 
   this.getAllLeftPages = async () => {
