@@ -1,17 +1,41 @@
 @import 'loadding.css';
 
 body {
-  min-width: 375px;
-  max-width: 800px;
+  font-family: sans-serif;
+  color: #393e46;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin: 0;
+  margin-top: 1em;
+}
+
+section#left, section#right {
+  flex: 1 0 200px;
+  margin: 0 4em;
+  padding: 1em;
+  background-color: #F1F1F1;
+  border-top-left-radius: 1em;
+  border-top-right-radius: 1em;
+}
+
+section#left {
+  order: -1;
+}
+
+section#right {
+  font-size: large;
+}
+
+section#main {
+  background-color: white;
+  flex: 4 0 500px;
   display: flex;
   flex-direction: column;
   border: 1px solid #ddd;
-  margin: 1em auto;
   min-height: calc(100vh - 2em);
   box-sizing: border-box;
-  color: #393e46;
   padding: 1em;
-  font-family: sans-serif;
 }
 
 #tokenSection {
@@ -96,6 +120,7 @@ button {
   border-radius: 1.5em;
   outline: none;
   border: none;
+  user-select: none;
 }
 
 section#bottom {
