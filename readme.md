@@ -12,7 +12,7 @@ But github don't show me the LOC. There some browser extensions can show the LOC
 ## try it online
 https://jasonzhouu.github.io/github-loc-rank/
 
-<img src="https://i.ibb.co/Wvc2TXk/screenshot-jasonzhouu-github-io-2020-03-15-18-18-18.png" alt="screenshot-jasonzhouu-github-io-2020-03-15-18-18-18" border="0">
+<img src="https://i.ibb.co/T1QNLs6/screenshot-localhost-8080-2020-03-15-20-23-18.png" alt="screenshot-localhost-8080-2020-03-15-20-23-18" border="0">
 
 ## import package 
 install:
