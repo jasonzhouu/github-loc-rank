@@ -14,13 +14,14 @@
  * √ 12。右上角提供github仓库链接
  * √ 13。将数据保存到local storage
  * 14。获取repo list立即渲染，后续边加载loc边渲染
- * 15。将mainlangaugefilter也保存下来
+ * √ 15。将mainlangaugefilter也保存下来
  * √ 16。自动从数组中获取filter的列表，计算各自有多少个，按各数从高到低排序
  * 17。第一次加载页面时，提示LOC、star排序按钮
  * 18。加载第一页后，自动加载下一页
  * 19。尝试不输入token
  * √ 20。固定表格第一列宽度
  * 21。localStorage数据保存后，用户更新stars数据的问题，即新star了项目，或者取消star了项目
+ * 22。设置LOC范围
  */
 const StarredRepositories = require('github-loc-rank');
 
@@ -28,7 +29,7 @@ let token = localStorage.getItem('token') || '';
 let pageLength = parseInt(localStorage.getItem('pageLength'), 10) || 0;
 let currentPage = parseInt(localStorage.getItem('currentPage'), 10) || 0;
 
-let mainLanguageFilter = '-';
+let mainLanguageFilter = localStorage.getItem('mainLanguage') || '-';
 
 let starredRepositories;
 
@@ -211,6 +212,7 @@ function clearSort() {
 
 document.getElementById('mainLanguage').addEventListener('change', (event) => {
   mainLanguageFilter = event.target.value;
+  localStorage.setItem('mainLanguage', mainLanguageFilter);
   render();
 });
 
