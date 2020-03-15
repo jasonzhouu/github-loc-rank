@@ -18,10 +18,17 @@
     <thead>
       <tr>
         <th>reponame</th>
-        <th>main language</th>
-        <th>stars</th>
+        <th>
+          <select id="mainLanguage">
+            <option value="Javascript">Javascript</option>
+            <option value="Typescript">Typescript</option>
+          </select>
+        </th>
+        <th id="stars" aria-sort="none">
+          stars <span></span>
+        </th>
         <th id="loc" aria-sort="none">
-          loc <span></span>
+          LOC <span></span>
         </th>
       </tr>
     </thead>
