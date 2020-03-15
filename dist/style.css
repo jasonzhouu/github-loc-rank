@@ -67,6 +67,7 @@ section#main {
 table {
   margin-bottom: 1rem;
   text-align: left;
+  border-collapse: collapse;
 }
 
 table > thead > tr > th {

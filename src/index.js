@@ -23,6 +23,7 @@
  * 22。设置LOC范围
  * √ 23。告诉当前是第几页
  * √ 24。新获取的数据也进行排序
+ * √ 25。为各loc区间设置背景色
  */
 const StarredRepositories = require('github-loc-rank');
 
@@ -151,8 +152,33 @@ function render() {
     }
 
     row.append(reponame, mainLanguage, stars, loc);
+    const color = calcColor(repository.loc);
+    row.style.cssText = `background-color: ${color}`;
     document.querySelector('tbody').append(row);
   });
+}
+
+function calcColor(loc) {
+  if (loc < 100) {
+    return `hsla(175, 77%, 73%, ${0.05})`;
+  } if (loc < 1000) {
+    return `hsla(175, 77%, 73%, ${0.2})`;
+  } if (loc < 2000) {
+    return `hsla(175, 77%, 73%, ${0.3})`;
+  } if (loc < 4000) {
+    return `hsla(175, 77%, 73%, ${0.4})`;
+  } if (loc < 8000) {
+    return `hsla(175, 77%, 73%, ${0.5})`;
+  } if (loc < 10000) {
+    return `hsla(175, 77%, 73%, ${0.6})`;
+  } if (loc < 50000) {
+    return `hsla(175, 77%, 73%, ${0.65})`;
+  } if (loc < 100000) {
+    return `hsla(175, 77%, 73%, ${0.7})`;
+  } if (loc < 100000) {
+    return `hsla(175, 77%, 73%, ${0.75})`;
+  }
+  return `hsla(175, 77%, 73%, ${0.8})`;
 }
 
 function renderRepo(htmlUrl, repoName) {
