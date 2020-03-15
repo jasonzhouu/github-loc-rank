@@ -160,7 +160,7 @@ function render() {
 
 function calcColor(loc) {
   if (loc < 100) {
-    return `hsla(175, 77%, 73%, ${0.05})`;
+    return `hsla(175, 77%, 73%, ${0.1})`;
   } if (loc < 1000) {
     return `hsla(175, 77%, 73%, ${0.2})`;
   } if (loc < 2000) {
@@ -171,14 +171,18 @@ function calcColor(loc) {
     return `hsla(175, 77%, 73%, ${0.5})`;
   } if (loc < 10000) {
     return `hsla(175, 77%, 73%, ${0.6})`;
-  } if (loc < 50000) {
-    return `hsla(175, 77%, 73%, ${0.65})`;
-  } if (loc < 100000) {
-    return `hsla(175, 77%, 73%, ${0.7})`;
-  } if (loc < 100000) {
-    return `hsla(175, 77%, 73%, ${0.75})`;
   }
-  return `hsla(175, 77%, 73%, ${0.8})`;
+  // 1万以上橙色
+  if (loc < 20000) {
+    return `hsla(18, 100%, 87%, ${0.4})`;
+  } if (loc < 40000) {
+    return `hsla(18, 100%, 87%, ${0.5})`;
+  } if (loc < 60000) {
+    return `hsla(18, 100%, 87%, ${0.6})`;
+  } if (loc < 100000) {
+    return `hsla(18, 100%, 87%, ${0.7})`;
+  }
+  return `hsla(18, 100%, 87%, ${0.8})`;
 }
 
 function renderRepo(htmlUrl, repoName) {
@@ -219,22 +223,23 @@ function alertInvalidToken() {
   document.getElementById('status').textContent = 'Error: failed internet connection or invalid token';
 }
 
-// todo: 新获取的数据也按照之前的设置进行排序
+// 新获取的数据也按照之前的设置进行排序
 ['loc', 'stars'].forEach((item) => {
   document.getElementById(item).addEventListener('click', (event) => {
     if (!starredRepositories) { return; } // 防止 starredRepositories 为undefined，造成下面调用它的方法出错
-    if (event.target.getAttribute('aria-sort') === 'none' || event.target.getAttribute('aria-sort') === 'ascending') {
-      sortItem = item;
-      sortDirection = 'descending';
-      clearSortAttribute();
-      event.target.setAttribute('aria-sort', 'descending');
-      event.target.querySelector('span').classList.add('descending');
-    } else if (event.target.getAttribute('aria-sort') === 'descending') {
+    // 第一次点击时，进行升序
+    if (event.target.getAttribute('aria-sort') === 'none' || event.target.getAttribute('aria-sort') === 'descending') {
       sortItem = item;
       sortDirection = 'ascending';
       clearSortAttribute();
       event.target.setAttribute('aria-sort', 'ascending');
       event.target.querySelector('span').classList.add('ascending');
+    } else if (event.target.getAttribute('aria-sort') === 'ascending') {
+      sortItem = item;
+      sortDirection = 'descending';
+      clearSortAttribute();
+      event.target.setAttribute('aria-sort', 'descending');
+      event.target.querySelector('span').classList.add('descending');
     }
     // 重新渲染，渲染时会排序
     render();
