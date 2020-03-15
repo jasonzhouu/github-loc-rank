@@ -142,7 +142,7 @@ function render() {
     const stars = document.createElement('td');
 
     reponame.append(renderRepo(repository.htmlUrl, repository.repoName));
-    loc.textContent = repository.loc;
+    loc.textContent = repository.loc > 0 ? repository.loc : '-';
     stars.textContent = repository.stars;
 
     if (repository.mainLanguage === null) {
