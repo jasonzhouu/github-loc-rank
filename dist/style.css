@@ -96,6 +96,7 @@ button {
   border-radius: 1.5em;
   outline: none;
   border: none;
+  user-select: none;
 }
 
 section#bottom {

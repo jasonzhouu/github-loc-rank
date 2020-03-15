@@ -22,6 +22,7 @@
  * √ 20。固定表格第一列宽度
  * 21。localStorage数据保存后，用户更新stars数据的问题，即新star了项目，或者取消star了项目
  * 22。设置LOC范围
+ * √ 23。告诉当前是第几页
  */
 const StarredRepositories = require('github-loc-rank');
 
@@ -45,7 +46,8 @@ if ((token !== '') && (pageLength !== 0) && (currentPage !== 0)) {
   });
   render();
   const status = document.getElementById('status');
-  status.textContent = `√ there are ${pageLength} pages`; // 提示页数
+  status.textContent = `√ there are ${pageLength} pages, loaded ${currentPage} pages`; // 提示页数
+
   document.querySelector('input').value = ''; // 清除输入框
   document.getElementById('load').style.display = 'inline-block'; // 显示下一页按钮
 
@@ -164,8 +166,10 @@ document.querySelector('#load').addEventListener('click', async (event) => {
     alertInvalidToken();
   }
 
-  event.target.style.display = 'inline'; // 显示加载按钮
-  loadding.style.display = 'none'; // 隐藏正在加载icon
+  event.target.style.display = 'inline'; // 显示按钮
+  loadding.style.display = 'none'; // 隐藏icon
+
+  document.getElementById('status').textContent = `√ there are ${pageLength} pages, loaded ${currentPage} pages`; // 提示页数
 
   // 如果已经加载到最后一页，将加载按钮去除
   if (currentPage > pageLength) {
