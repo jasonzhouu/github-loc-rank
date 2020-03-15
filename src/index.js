@@ -9,12 +9,13 @@
  * √ 8。webpack区分development, production环境
  * √ 9。token无效提示
  * √ 10。加载出页面数之后，立即加载表格
- * 11。readme介绍如何获取token，在页面上也进行提示
+ * 11。readme介绍如何获取token
+ *     在页面上也进行提示
  * 12。右上角提供github仓库链接
  * √ 13。将数据保存到local storage
  * 14。获取repo list立即渲染，后续边加载loc边渲染
  * 15。将mainlangaugefilter也保存下来
- * 16。自动从数组中去除filter的列表，并提示各自有多少项
+ * √ 16。自动从数组中获取filter的列表，并提示各自有多少项
  * 17。第一次加载页面时，提示LOC、star排序按钮
  * 18。加载第一页后，自动加载下一页
  * 19。尝试不输入token
@@ -28,6 +29,7 @@ let pageLength = parseInt(localStorage.getItem('pageLength'), 10) || 0;
 let currentPage = parseInt(localStorage.getItem('currentPage'), 10) || 0;
 
 let mainLanguageFilter = '';
+const mainLanguageOptions = [];
 
 let starredRepositories;
 
@@ -110,6 +112,7 @@ function filterData() {
 }
 
 function render() {
+  createSelection();
   // 开始渲染生成DOM前，先确认要渲染的数据
   let dataNeedToBeRendered = [];
   dataNeedToBeRendered = filterData();
@@ -207,8 +210,23 @@ function clearSort() {
   });
 }
 
-
 document.getElementById('mainLanguage').addEventListener('change', (event) => {
   mainLanguageFilter = event.target.value;
   render();
 });
+
+function createSelection() {
+  starredRepositories.get().forEach((item) => {
+    if (item.mainLanguage !== ''
+     && mainLanguageOptions.includes(item.mainLanguage) === false) {
+      mainLanguageOptions.push(item.mainLanguage);
+    }
+  });
+  const select = document.getElementById('mainLanguage');
+  mainLanguageOptions.forEach((item) => {
+    const option = document.createElement('option');
+    option.textContent = item;
+    option.value = item;
+    select.append(option);
+  });
+}
