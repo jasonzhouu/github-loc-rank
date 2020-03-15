@@ -15,7 +15,7 @@
  * √ 13。将数据保存到local storage
  * 14。获取repo list立即渲染，后续边加载loc边渲染
  * 15。将mainlangaugefilter也保存下来
- * √ 16。自动从数组中获取filter的列表，并提示各自有多少项
+ * √ 16。自动从数组中获取filter的列表，计算各自有多少个，按各数从高到低排序
  * 17。第一次加载页面时，提示LOC、star排序按钮
  * 18。加载第一页后，自动加载下一页
  * 19。尝试不输入token
@@ -29,7 +29,7 @@ let pageLength = parseInt(localStorage.getItem('pageLength'), 10) || 0;
 let currentPage = parseInt(localStorage.getItem('currentPage'), 10) || 0;
 
 let mainLanguageFilter = '';
-const mainLanguageOptions = [];
+let mainLanguageOptions = [];
 
 let starredRepositories;
 
@@ -216,17 +216,33 @@ document.getElementById('mainLanguage').addEventListener('change', (event) => {
 });
 
 function createSelection() {
-  starredRepositories.get().forEach((item) => {
-    if (item.mainLanguage !== ''
-     && mainLanguageOptions.includes(item.mainLanguage) === false) {
-      mainLanguageOptions.push(item.mainLanguage);
+  mainLanguageOptions = [];
+
+  starredRepositories.get().forEach((item1) => {
+    if (item1.mainLanguage !== ''
+     && mainLanguageOptions
+       .filter((item2) => item1.mainLanguage === item2.mainLanguage)
+       .length === 0) {
+      mainLanguageOptions.push({
+        mainLanguage: item1.mainLanguage,
+      });
     }
   });
+  countOfEachLanguage();
   const select = document.getElementById('mainLanguage');
   mainLanguageOptions.forEach((item) => {
     const option = document.createElement('option');
-    option.textContent = item;
-    option.value = item;
+    option.innerHTML = `${item.mainLanguage} -- ${item.count}`;
+    option.value = item.mainLanguage;
     select.append(option);
   });
+}
+
+function countOfEachLanguage() {
+  mainLanguageOptions.forEach((item1) => {
+    item1.count = starredRepositories.get()
+      .filter((item2) => item1.mainLanguage === item2.mainLanguage)
+      .length;
+  });
+  mainLanguageOptions.sort((i, j) => j.count - i.count);
 }
