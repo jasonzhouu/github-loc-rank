@@ -48,9 +48,7 @@ if ((token !== '') && (pageLength !== 0) && (currentPage !== 0)) {
     token,
   });
   render();
-  const status = document.getElementById('status');
-  status.textContent = `√ there are ${pageLength} pages, loaded ${currentPage} pages`; // 提示页数
-
+  showStatus(); // 提示当前第几页
   document.querySelector('input').value = ''; // 清除输入框
   document.getElementById('load').style.display = 'inline-block'; // 显示下一页按钮
 
@@ -61,6 +59,11 @@ if ((token !== '') && (pageLength !== 0) && (currentPage !== 0)) {
       document.querySelector('#load').click();
     }, 100);
   }
+}
+
+function showStatus() {
+  const status = document.getElementById('status');
+  status.textContent = `√ there are ${pageLength} pages, loaded ${currentPage - 1} pages`; // 提示页数
 }
 
 document.querySelector('#token').addEventListener('click', async () => {
@@ -177,8 +180,7 @@ document.querySelector('#load').addEventListener('click', async (event) => {
 
   event.target.style.display = 'inline'; // 显示按钮
   loadding.style.display = 'none'; // 隐藏icon
-
-  document.getElementById('status').textContent = `√ there are ${pageLength} pages, loaded ${currentPage} pages`; // 提示页数
+  showStatus(); // 提示当前第几页
 
   // 如果已经加载到最后一页，将加载按钮去除
   if (currentPage > pageLength) {
