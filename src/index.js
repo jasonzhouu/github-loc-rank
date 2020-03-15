@@ -20,7 +20,7 @@
  * 18。加载第一页后，自动加载下一页
  * 19。尝试不输入token
  * 20。美化下拉菜单，不要太宽
- * 21。固定各column宽度
+ * 21。固定第一列宽度
  */
 const StarredRepositories = require('github-loc-rank');
 
@@ -230,6 +230,9 @@ function createSelection() {
   });
   countOfEachLanguage();
   const select = document.getElementById('mainLanguage');
+
+  // 先将已有的option清空，以避免每次重新渲染时，都在继续添加
+  clearOption();
   mainLanguageOptions.forEach((item) => {
     const option = document.createElement('option');
     option.innerHTML = `${item.mainLanguage} -- ${item.count}`;
@@ -245,4 +248,10 @@ function countOfEachLanguage() {
       .length;
   });
   mainLanguageOptions.sort((i, j) => j.count - i.count);
+}
+
+function clearOption() {
+  document.querySelectorAll('select#mainLanguage option').forEach((item) => {
+    document.querySelector('select#mainLanguage').removeChild(item);
+  });
 }
