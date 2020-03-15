@@ -22,6 +22,7 @@
  * 21。localStorage数据保存后，用户更新stars数据的问题，即新star了项目，或者取消star了项目
  * 22。设置LOC范围
  * √ 23。告诉当前是第几页
+ * √ 24。新获取的数据也进行排序
  */
 const StarredRepositories = require('github-loc-rank');
 
@@ -32,6 +33,9 @@ let currentPage = parseInt(localStorage.getItem('currentPage'), 10) || 0;
 let mainLanguageFilter = localStorage.getItem('mainLanguage') || '-';
 
 let starredRepositories;
+
+let sortItem = '';
+let sortDirection = '';
 
 document.querySelector('input').value = token;
 
@@ -113,12 +117,19 @@ function filterData() {
 }
 
 function render() {
+  // 1。排序，并将其保存到localStorage
+  sortRepositores();
+  localStorage.setItem('extractedData', JSON.stringify(starredRepositories.get()));
+
+  // 2。创建语言选项下拉框
   renderSelection();
-  // 开始渲染生成DOM前，先确认要渲染的数据
+  // 3。生成特定语言得到的数据
   let dataNeedToBeRendered = [];
   dataNeedToBeRendered = filterData();
 
+  // 4。清空表格
   document.querySelector('tbody').innerHTML = '';
+  // 5。重新生成表格
   dataNeedToBeRendered.forEach((repository) => {
     const row = document.createElement('tr');
     const reponame = document.createElement('td');
@@ -159,7 +170,6 @@ document.querySelector('#load').addEventListener('click', async (event) => {
     currentPage = await starredRepositories.getOnePage();
     // 如果获取数据没有出错，才将其保存到localStorage
     localStorage.setItem('currentPage', currentPage);
-    localStorage.setItem('extractedData', JSON.stringify(starredRepositories.get()));
     render();
   } catch (error) {
     alertInvalidToken();
@@ -186,23 +196,32 @@ function alertInvalidToken() {
   document.getElementById(item).addEventListener('click', (event) => {
     if (!starredRepositories) { return; } // 防止 starredRepositories 为undefined，造成下面调用它的方法出错
     if (event.target.getAttribute('aria-sort') === 'none' || event.target.getAttribute('aria-sort') === 'ascending') {
-      clearSort();
-      starredRepositories.sort(item, 'descending');
+      sortItem = item;
+      sortDirection = 'descending';
+      clearSortAttribute();
       event.target.setAttribute('aria-sort', 'descending');
       event.target.querySelector('span').classList.add('descending');
     } else if (event.target.getAttribute('aria-sort') === 'descending') {
-      clearSort();
-      starredRepositories.sort(item, 'ascending');
+      sortItem = item;
+      sortDirection = 'ascending';
+      clearSortAttribute();
       event.target.setAttribute('aria-sort', 'ascending');
       event.target.querySelector('span').classList.add('ascending');
     }
+    // 重新渲染，渲染时会排序
     render();
   });
 });
 
-function clearSort() {
+function sortRepositores() {
+  if (sortItem === '' || sortDirection === '') return;
+  starredRepositories.sort(sortItem, sortDirection);
+}
+
+function clearSortAttribute() {
   document.querySelectorAll('thead tr th').forEach((th) => {
     if (th.hasAttributes('aria-sort')) {
+      starredRepositories.sort();
       th.setAttribute('aria-sort', 'none');
     }
     const span = th.querySelector('span');
