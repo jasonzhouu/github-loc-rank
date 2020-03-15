@@ -6,26 +6,32 @@ body {
   display: flex;
   flex-direction: row;
   justify-content: center;
+  margin: 0;
+  margin-top: 2em;
+}
+
+section#left, section#right {
+  flex: 1 0 200px;
+  margin: 0 4em;
+  padding: 1em;
   background-color: #eeeeee;
+  border-radius: 1em;
 }
 
 section#left {
-  flex: 1 0 300px;
   order: -1;
-  padding: 4em;
 }
 
 section#right {
-  flex: 1 0 300px;
+  font-size: large;
 }
 
 section#main {
   background-color: white;
-  flex: 5 0 500px;
+  flex: 4 0 500px;
   display: flex;
   flex-direction: column;
   border: 1px solid #ddd;
-  margin: 1em auto;
   min-height: calc(100vh - 2em);
   box-sizing: border-box;
   padding: 1em;
