@@ -9,8 +9,7 @@
  * √ 8。webpack区分development, production环境
  * √ 9。token无效提示
  * √ 10。加载出页面数之后，立即加载表格
- * 11。readme介绍如何获取token
- *     在页面上也进行提示
+ * √ 11。在页面上进行提示如何使用
  * √ 12。右上角提供github仓库链接
  * √ 13。将数据保存到local storage
  * 14。获取repo list立即渲染，后续边加载loc边渲染
