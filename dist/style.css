@@ -68,6 +68,20 @@ table > thead > tr > th:nth-child(n+3) span.descending {
   border-top-color: #00ADB5;
 }
 
+td a {
+  text-decoration: none;
+  color: #00adb5;
+}
+
+td a:hover {
+  text-decoration: underline;
+}
+
+td a:visited {
+  text-decoration: none;
+  color: #00adb5;
+}
+
 button {
   display: inline-block;
   font-weight: bolder;
@@ -81,6 +95,14 @@ button {
   border: none;
 }
 
+section#bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 3.5rem;
+}
+
 #load {
   display: none;
 }
@@ -88,18 +110,4 @@ button {
 .lds-ellipsis {
   margin: 0 auto;
   display: none;
-}
-
-td a {
-  text-decoration: none;
-  color: #00adb5;
-}
-
-td a:hover {
-  text-decoration: underline;
-}
-
-td a:visited {
-  text-decoration: none;
-  color: #00adb5;
 }

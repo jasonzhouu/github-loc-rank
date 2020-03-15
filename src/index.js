@@ -3,31 +3,40 @@
  * √ 2。展示数据
  * √ 3。用户输入token
  * √ 4。按loc、stars数量
- * 5。按language筛选
+ * √ 5。按language筛选
  * √ 6。webpack 打包代码，因为应用的包用的是commonjs模块系统，需要进行转换
  * √ 7。webpack 自动打包，自动刷新页面
  * √ 8。webpack区分development, production环境
  * √ 9。token无效提示
  * √ 10。加载出页面数之后，立即加载表格
- * 11。readme介绍如何获取token
+ * 11。readme介绍如何获取token，在页面上也进行提示
  * 12。右上角提供github仓库链接
  * √ 13。将数据保存到local storage
  * 14。获取repo list立即渲染，后续边加载loc边渲染
+ * 15。将mainlangaugefilter也保存下来
+ * 16。自动从数组中去除filter的列表，并提示各自有多少项
+ * 17。第一次加载页面时，提示LOC、star排序按钮
+ * 18。加载第一页后，自动加载下一页
+ * 19。尝试不输入token
+ * 20。美化下拉菜单，不要太宽
+ * 21。固定各column宽度
  */
 const StarredRepositories = require('github-loc-rank');
 
-let token = localStorage.getItem('token');
-let pageLength = parseInt(localStorage.getItem('pageLength'), 10);
-let currentPage = parseInt(localStorage.getItem('currentPage'), 10);
+let token = localStorage.getItem('token') || '';
+let pageLength = parseInt(localStorage.getItem('pageLength'), 10) || 0;
+let currentPage = parseInt(localStorage.getItem('currentPage'), 10) || 0;
+
+let mainLanguageFilter = '';
 
 let starredRepositories;
 
 document.querySelector('input').value = token;
 
-if (token && pageLength && currentPage) {
+if ((token !== '') && (pageLength !== 0) && (currentPage !== 0)) {
   starredRepositories = new StarredRepositories();
   starredRepositories.restore({
-    extractedData: JSON.parse(localStorage.getItem('extractedData')),
+    extractedData: JSON.parse(localStorage.getItem('extractedData') || '[]'), // 避免因为读取数据为null，造成对其parse出错
     pageLength,
     currentPage,
     token,
@@ -37,12 +46,21 @@ if (token && pageLength && currentPage) {
   status.textContent = `√ there are ${pageLength} pages`; // 提示页数
   document.querySelector('input').value = ''; // 清除输入框
   document.getElementById('load').style.display = 'inline-block'; // 显示下一页按钮
+
+  if (starredRepositories.get().length === 0) {
+    // 如果恢复的数据是空的，则立即点击加载下一页
+    // 但是运行到这里的时候，load按钮的click时间还未注册
+    setTimeout(() => {
+      document.querySelector('#load').click();
+    }, 100);
+  }
 }
 
 document.querySelector('#token').addEventListener('click', async () => {
   localStorage.setItem('token', document.querySelector('input').value);
 
   const status = document.getElementById('status');
+  // 先清空，以免多次点击，造成不断累积
   status.innerHTML = '';
   // 显示loadding icon
   const loadding = document.querySelector('.lds-ellipsis').cloneNode(true);
@@ -52,34 +70,52 @@ document.querySelector('#token').addEventListener('click', async () => {
   token = document.querySelector('input').value;
   starredRepositories = new StarredRepositories();
 
+  // 可能是更换token，初始化内存和localStorage中的数据，清空table
   clearData();
-  // 可能是更换icon，初始化内存和localStorage中的数据
+  document.querySelector('tbody').innerHTML = '';
   try {
     pageLength = await starredRepositories.init(token);
+    // 获取数据没有问题，才写入localStorage
+    localStorage.setItem('currentPage', 1);
+    localStorage.setItem('pageLength', pageLength);
+    document.querySelector('input').value = ''; // 清除输入框
+    status.textContent = `√ there are ${pageLength} pages`; // 提示页数
+    document.getElementById('load').style.display = 'inline-block'; // 显示加载按钮
+    document.querySelector('#load').click(); // 点击加载第一页数据
   } catch (error) {
     alertInvalidToken();
   }
-  localStorage.setItem('pageLength', pageLength);
-
-  status.removeChild(loadding); // 去除loadding icon
-  status.textContent = `√ there are ${pageLength} pages`; // 提示页数
-  document.querySelector('input').value = ''; // 清除输入框
-  document.getElementById('load').style.display = 'inline-block'; // 显示下一页按钮
-
-  document.querySelector('#load').click();
 });
 
 function clearData() {
-  pageLength = 1;
-  currentPage = 1;
+  pageLength = 0;
+  currentPage = 0;
   localStorage.setItem('pageLength', pageLength);
   localStorage.setItem('currentPage', currentPage);
   localStorage.setItem('extractedData', []);
 }
 
+function filterData() {
+  // 1。如果没有设置筛选，则返回全部数据
+  if (mainLanguageFilter === '') return starredRepositories.get();
+  // 2。如果设置了筛选，则返回筛选得到的数据
+  const filteredData = starredRepositories.get().filter((item) => {
+    if (item.mainLanguage !== null
+      && item.mainLanguage.toLowerCase() === mainLanguageFilter.toLowerCase()) {
+      return true;
+    }
+    return false;
+  });
+  return filteredData;
+}
+
 function render() {
+  // 开始渲染生成DOM前，先确认要渲染的数据
+  let dataNeedToBeRendered = [];
+  dataNeedToBeRendered = filterData();
+
   document.querySelector('tbody').innerHTML = '';
-  starredRepositories.get().forEach((repository) => {
+  dataNeedToBeRendered.forEach((repository) => {
     const row = document.createElement('tr');
     const reponame = document.createElement('td');
     const mainLanguage = document.createElement('td');
@@ -117,16 +153,16 @@ document.querySelector('#load').addEventListener('click', async (event) => {
 
   try {
     currentPage = await starredRepositories.getOnePage();
+    // 如果获取数据没有出错，才将其保存到localStorage
+    localStorage.setItem('currentPage', currentPage);
+    localStorage.setItem('extractedData', JSON.stringify(starredRepositories.get()));
+    render();
   } catch (error) {
     alertInvalidToken();
   }
-  localStorage.setItem('currentPage', currentPage);
-  localStorage.setItem('extractedData', JSON.stringify(starredRepositories.get()));
 
-  render();
-
-  event.target.style.display = 'inline';
-  loadding.style.display = 'none';
+  event.target.style.display = 'inline'; // 显示加载按钮
+  loadding.style.display = 'none'; // 隐藏正在加载icon
 
   // 如果已经加载到最后一页，将加载按钮去除
   if (currentPage > pageLength) {
@@ -136,7 +172,7 @@ document.querySelector('#load').addEventListener('click', async (event) => {
 });
 
 function alertInvalidToken() {
-  document.getElementById('status').textContent = 'Error: maybe your token is invalid';
+  document.getElementById('status').textContent = 'Error: failed internet connection or invalid token';
 }
 
 // todo: 新获取的数据也按照之前的设置进行排序
@@ -170,3 +206,9 @@ function clearSort() {
     }
   });
 }
+
+
+document.getElementById('mainLanguage').addEventListener('change', (event) => {
+  mainLanguageFilter = event.target.value;
+  render();
+});

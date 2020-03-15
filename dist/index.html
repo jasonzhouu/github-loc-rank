@@ -18,7 +18,13 @@
     <thead>
       <tr>
         <th>reponame</th>
-        <th>main language</th>
+        <th>
+          <select id="mainLanguage">
+            <option value="">--Choose an language--</option>
+            <option value="Javascript">Javascript</option>
+            <option value="Typescript">Typescript</option>
+          </select>
+        </th>
         <th id="stars" aria-sort="none">
           stars <span></span>
         </th>
@@ -29,13 +35,15 @@
     </thead>
     <tbody></tbody>
   </table>
-  <button id="load">load a page</button>
-  <div class="lds-ellipsis">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
+  <section id="bottom">
+    <button id="load">load a page</button>
+    <div class="lds-ellipsis">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </div>
+  </section>
   <script src="./app.js" type="module"></script>
 </body>
 

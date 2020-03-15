@@ -7,7 +7,7 @@
     "watch": "webpack --watch",
     "build": "webpack --mode production",
     "start": "webpack-dev-server --open",
-    "deploy": "gh-pages -d dist --repo git@github.com:jasonzhouu/github-loc-rank.git"
+    "deploy": "npm run build && gh-pages -d dist --repo git@github.com:jasonzhouu/github-loc-rank.git"
   },
   "keywords": [],
   "author": "",
