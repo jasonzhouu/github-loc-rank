@@ -19,8 +19,7 @@
  * 17。第一次加载页面时，提示LOC、star排序按钮
  * 18。加载第一页后，自动加载下一页
  * 19。尝试不输入token
- * 20。美化下拉菜单，不要太宽
- * 21。固定第一列宽度
+ * 20。固定第一列宽度
  */
 const StarredRepositories = require('github-loc-rank');
 
@@ -28,8 +27,7 @@ let token = localStorage.getItem('token') || '';
 let pageLength = parseInt(localStorage.getItem('pageLength'), 10) || 0;
 let currentPage = parseInt(localStorage.getItem('currentPage'), 10) || 0;
 
-let mainLanguageFilter = '';
-let mainLanguageOptions = [];
+let mainLanguageFilter = '-';
 
 let starredRepositories;
 
@@ -99,7 +97,7 @@ function clearData() {
 
 function filterData() {
   // 1。如果没有设置筛选，则返回全部数据
-  if (mainLanguageFilter === '') return starredRepositories.get();
+  if (mainLanguageFilter === '-') return starredRepositories.get();
   // 2。如果设置了筛选，则返回筛选得到的数据
   const filteredData = starredRepositories.get().filter((item) => {
     if (item.mainLanguage !== null
@@ -112,7 +110,7 @@ function filterData() {
 }
 
 function render() {
-  createSelection();
+  renderSelection();
   // 开始渲染生成DOM前，先确认要渲染的数据
   let dataNeedToBeRendered = [];
   dataNeedToBeRendered = filterData();
@@ -215,20 +213,10 @@ document.getElementById('mainLanguage').addEventListener('change', (event) => {
   render();
 });
 
-function createSelection() {
-  mainLanguageOptions = [];
+function renderSelection() {
+  if (starredRepositories.get().length === 0) return;
 
-  starredRepositories.get().forEach((item1) => {
-    if (item1.mainLanguage !== ''
-     && mainLanguageOptions
-       .filter((item2) => item1.mainLanguage === item2.mainLanguage)
-       .length === 0) {
-      mainLanguageOptions.push({
-        mainLanguage: item1.mainLanguage,
-      });
-    }
-  });
-  countOfEachLanguage();
+  const mainLanguageOptions = createSelectionList();
   const select = document.getElementById('mainLanguage');
 
   // 先将已有的option清空，以避免每次重新渲染时，都在继续添加
@@ -239,19 +227,38 @@ function createSelection() {
     option.value = item.mainLanguage;
     select.append(option);
   });
+  select.value = mainLanguageFilter;
 }
 
-function countOfEachLanguage() {
+function createSelectionList() {
+  const mainLanguageOptions = [];
+
+  // 语言列表
+  starredRepositories.get().forEach((item1) => {
+    if (item1.mainLanguage !== ''
+     && mainLanguageOptions
+       .filter((item2) => item1.mainLanguage === item2.mainLanguage)
+       .length === 0) {
+      mainLanguageOptions.push({
+        mainLanguage: item1.mainLanguage,
+      });
+    }
+  });
+  // 各语言对应的仓库数量列表，并排序
   mainLanguageOptions.forEach((item1) => {
     item1.count = starredRepositories.get()
       .filter((item2) => item1.mainLanguage === item2.mainLanguage)
       .length;
   });
   mainLanguageOptions.sort((i, j) => j.count - i.count);
+
+  return mainLanguageOptions;
 }
 
 function clearOption() {
-  document.querySelectorAll('select#mainLanguage option').forEach((item) => {
-    document.querySelector('select#mainLanguage').removeChild(item);
-  });
+  while (document.getElementById('mainLanguage').lastChild.value !== '-') {
+    document.getElementById('mainLanguage').removeChild(
+      document.getElementById('mainLanguage').lastChild,
+    );
+  }
 }
