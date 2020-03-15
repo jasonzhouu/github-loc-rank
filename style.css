@@ -47,12 +47,15 @@ table {
 
 table > thead > tr > th {
   user-select: none;
-  font-family: sans-serif;
   font-size: 1.3em;
+}
+table > thead > tr > th:first-child {
+  width: 330px;
 }
 table > thead > tr > th:nth-child(n+3) {
   cursor: pointer;
 }
+/* 排序的上下方向箭头，用width,height为0的border创建 */
 table > thead > tr > th:nth-child(n+3) span {
   display: inline-block;
   width: 0;
@@ -68,28 +71,6 @@ table > thead > tr > th:nth-child(n+3) span.descending {
   border-top-color: #00ADB5;
 }
 
-button {
-  display: inline-block;
-  font-weight: bolder;
-  margin: 0 auto;
-  padding: 1em 2em;
-  height: 3em;
-  background-color: #00ADB5;
-  color: white;
-  border-radius: 1.5em;
-  outline: none;
-  border: none;
-}
-
-#load {
-  display: none;
-}
-
-.lds-ellipsis {
-  margin: 0 auto;
-  display: none;
-}
-
 td a {
   text-decoration: none;
   color: #00adb5;
@@ -103,3 +84,34 @@ td a:visited {
   text-decoration: none;
   color: #00adb5;
 }
+
+button {
+  display: inline-block;
+  font-weight: bolder;
+  margin: 0 auto;
+  padding: 1em 2em;
+  height: 3em;
+  background-color: #00ADB5;
+  color: white;
+  border-radius: 1.5em;
+  outline: none;
+  border: none;
+}
+
+section#bottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  height: 3.5rem;
+}
+
+#load {
+  display: none;
+}
+
+.lds-ellipsis {
+  margin: 0 auto;
+  display: none;
+}
+
