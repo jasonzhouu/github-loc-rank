@@ -2,7 +2,7 @@
 [![install size][install-size-image]][install-size-url]
 
 ## used to
-get the lines of code (LOC) of github repositories that are starred by you.
+Rank the lines of code (LOC) of github repositories that are starred by you.
 
 ## reason why create it
 because I want to join the contribution of open source repository on github, but I don't want to join a repository that's too large. I want to join the repository that is less than 20,000 lines of code, so I need to know the LOC of them.
@@ -12,7 +12,7 @@ But github don't show me the LOC. There some browser extensions can show the LOC
 ## try it online
 https://jasonzhouu.github.io/github-loc-rank/
 
-<img src="https://i.ibb.co/zxwYXn6/screenshot-localhost-8080-2020-03-14-16-17-14.png" alt="screenshot-localhost-8080-2020-03-14-16-17-14" border="0">
+<img src="https://i.ibb.co/Wvc2TXk/screenshot-jasonzhouu-github-io-2020-03-15-18-18-18.png" alt="screenshot-jasonzhouu-github-io-2020-03-15-18-18-18" border="0">
 
 ## import package 
 install:
