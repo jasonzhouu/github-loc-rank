@@ -34,15 +34,22 @@ module.exports = function StarredRepositories() {
    * 提取数据，并添加到 extractedData
    */
   this.init = async (aToken) => {
+    // 先初始化数据，因为可能是更换token
+    currentPage = 1;
+    pageLength = 1;
+    extractedData = [];
+
     token = aToken;
     octokit = new Octokit({ auth: aToken });
     try {
       const { data, headers } = await octokit.request(url);
       pageLength = parseHeaderLink(headers.link);
+      return pageLength;
     } catch (error) {
       console.error(error);
+      // 如果获取网络数据出错，只返回错误
+      throw error;
     }
-    return pageLength;
   };
 
   /**

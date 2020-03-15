@@ -11,7 +11,7 @@ module.exports = async function extractData(repositories, token) {
       repoName: repository.full_name,
       htmlUrl: repository.html_url,
       stars: repository.stargazers_count,
-      mainLanguage: repository.language,
+      mainLanguage: repository.language || '',
       description: repository.description,
     });
   });
