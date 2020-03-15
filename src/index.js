@@ -11,7 +11,7 @@
  * √ 10。加载出页面数之后，立即加载表格
  * 11。readme介绍如何获取token
  *     在页面上也进行提示
- * 12。右上角提供github仓库链接
+ * √ 12。右上角提供github仓库链接
  * √ 13。将数据保存到local storage
  * 14。获取repo list立即渲染，后续边加载loc边渲染
  * 15。将mainlangaugefilter也保存下来
@@ -19,7 +19,8 @@
  * 17。第一次加载页面时，提示LOC、star排序按钮
  * 18。加载第一页后，自动加载下一页
  * 19。尝试不输入token
- * 20。固定第一列宽度
+ * √ 20。固定表格第一列宽度
+ * 21。localStorage数据保存后，用户更新stars数据的问题，即新star了项目，或者取消star了项目
  */
 const StarredRepositories = require('github-loc-rank');
 

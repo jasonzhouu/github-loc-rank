@@ -47,12 +47,15 @@ table {
 
 table > thead > tr > th {
   user-select: none;
-  font-family: sans-serif;
   font-size: 1.3em;
+}
+table > thead > tr > th:first-child {
+  width: 330px;
 }
 table > thead > tr > th:nth-child(n+3) {
   cursor: pointer;
 }
+/* 排序的上下方向箭头，用width,height为0的border创建 */
 table > thead > tr > th:nth-child(n+3) span {
   display: inline-block;
   width: 0;
