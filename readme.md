@@ -26,13 +26,12 @@ const fs = require('fs');
 const StarredRepositories = require('github-loc-rank');
 
 (async function IIFE() {
-  const starredRepositories = new StarredRepositories);
-  await starredRepositories.init('your-github-token');
-  // get one page
-  await starredRepositories.getOnePage();
-  // get the extracted data
-  const extractedData = starredRepositories.get();
-  fs.writeFileSync('./repositories.json', JSON.stringify(extractedData, null, '\t'));
+  const starredRepositories = new StarredRepositories();
+  let data = [];
+  data = await starredRepositories.init('your-github-token');
+  fs.writeFileSync('./repositories1.json', JSON.stringify(data, null, '\t'));
+  data = await starredRepositories.load();
+  fs.writeFileSync('./repositories2.json', JSON.stringify(data, null, '\t'));
 }());
 
 ```
