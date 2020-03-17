@@ -12,7 +12,6 @@ module.exports = async function extractData(repositories, token) {
       htmlUrl: repository.html_url,
       stars: repository.stargazers_count,
       mainLanguage: repository.language || '',
-      description: repository.description,
     });
   });
   const locList = await Promise.all(locPromises);
