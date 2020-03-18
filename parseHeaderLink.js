@@ -10,5 +10,5 @@ module.exports = function parseHeaderLink(link) {
     console.error(error);
   }
 
-  return pageLength;
+  return parseInt(pageLength);
 };
