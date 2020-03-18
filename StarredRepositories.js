@@ -14,8 +14,8 @@ module.exports = function StarredRepositories() {
 
   this.restore = (restoreData) => {
     if (restoreData) {
-      pageLength = restoreData.pageLength;
-      nextPage = restoreData.nextPage;
+      pageLength = restoreData.page.total;
+      nextPage = restoreData.page.next;
       token = restoreData.token;
       octokit = new Octokit({ auth: token });
     }
